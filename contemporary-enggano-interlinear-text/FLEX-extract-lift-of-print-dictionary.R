@@ -1,6 +1,7 @@
 ## Note: these texts have no translation elements, so I manually added it for escaping error:
 ### Kah yõkõ' kėrape ka'daih (2f6dc8ff-b718-4687-ac85-344a19959037)
 ### Yãh yah bėhu̇dah ayam (a4c92df3-3d45-4e2b-acb5-7c0fd99e9d48)
+### This has been git tracked now (1 Jan. 2025)
 
 
 library(tidyverse)
@@ -42,7 +43,7 @@ myentry_children_name <- myentry %>%
   unlist() %>% 
   unique()
 myentry_children_name
-# [1] "lexical-unit" "trait"        "relation"     "etymology"    "sense"        "field"        "note"         "citation" 
+# [1] "lexical-unit" (DONE) "trait" (DONE) "relation" (DONE) "etymology" (DONE)    "sense"    (DONE)    "field"        "note"   (DONE)      "citation" 
 
 
 # LEXICAL-UNIT: extract the <lexical-unit> using purrr::map() for each <entry> =====
@@ -209,12 +210,29 @@ s |>
   map(~tibble(sense_gram = .)) -> s_gram
 
 s |> 
+  map(~map(., ~xml_find_all(., "illustration"))) |> 
+  map(~map(., ~xml_attr(., "href"))) |> 
+  map(~map(., \(x) if(identical(x, character(0))) NA else x)) |> 
+  map(~map(., \(x) replace(x, nchar(x) == 0, NA))) |> 
+  map(unlist) |> 
+  map(~tibble(pict = .)) -> s_pict
+
+s |> 
   map(~map(., ~xml_find_all(., "gloss[@lang=\"en\"]/text"))) |> 
   map(~map(., ~xml_text(.))) |> 
   map(~map(., \(x) if(identical(x, character(0))) NA else x)) |> 
   map(~map(., \(x) replace(x, nchar(x) == 0, NA))) |> 
   map(unlist) |> 
   map(~tibble(sense_gloss_en = .)) -> s_ge
+
+s |> 
+  map(~map(., ~xml_find_all(., "reversal/form[@lang='en']/text"))) |> 
+  map(~map(., ~xml_text(.))) |> 
+  map(~map(., \(x) if(identical(x, character(0))) NA else x)) |> 
+  map(~map(., \(x) replace(x, nchar(x) == 0, NA))) |> 
+  map(~map(., ~str_c(., collapse = " ; "))) |> 
+  map(unlist) |> 
+  map(~tibble(rev_en = .)) -> s_rev_en
 
 s |> 
   map(~map(., ~xml_find_all(., "gloss[@lang=\"id\"]/text"))) |> 
@@ -225,24 +243,34 @@ s |>
   map(~tibble(sense_gloss_idn = .)) -> s_gn
 
 s |> 
-  map(~map(., ~xml_find_all(., "definition[@lang=\"en\"]/text"))) |> 
+  map(~map(., ~xml_find_all(., "reversal/form[@lang='id']/text"))) |> 
   map(~map(., ~xml_text(.))) |> 
   map(~map(., \(x) if(identical(x, character(0))) NA else x)) |> 
   map(~map(., \(x) replace(x, nchar(x) == 0, NA))) |> 
+  map(~map(., ~str_c(., collapse = " ; "))) |> 
   map(unlist) |> 
-  map(~tibble(sense_definition_en = .)) -> s_de
+  map(~tibble(rev_id = .)) -> s_rev_id
 
-s |> 
-  map(~map(., ~xml_find_all(., "definition[@lang=\"id\"]/text"))) |> 
-  map(~map(., ~xml_text(.))) |> 
-  map(~map(., \(x) if(identical(x, character(0))) NA else x)) |> 
-  map(~map(., \(x) replace(x, nchar(x) == 0, NA))) |> 
-  map(unlist) |> 
-  map(~tibble(sense_definition_idn = .)) -> s_dn
+# s |> 
+#   map(~map(., ~xml_find_all(., "definition[@lang=\"en\"]/text"))) |> 
+#   map(~map(., ~xml_text(.))) |> 
+#   map(~map(., \(x) if(identical(x, character(0))) NA else x)) |> 
+#   map(~map(., \(x) replace(x, nchar(x) == 0, NA))) |> 
+#   map(unlist) |> 
+#   map(~tibble(sense_definition_en = .)) -> s_de
+# 
+# s |> 
+#   map(~map(., ~xml_find_all(., "definition[@lang=\"id\"]/text"))) |> 
+#   map(~map(., ~xml_text(.))) |> 
+#   map(~map(., \(x) if(identical(x, character(0))) NA else x)) |> 
+#   map(~map(., \(x) replace(x, nchar(x) == 0, NA))) |> 
+#   map(unlist) |> 
+#   map(~tibble(sense_definition_idn = .)) -> s_dn
 
 s_df <- pmap(list(a = s_id, b = s_order, c = s_gram, d = s_ge, e = s_gn, 
-                  f = s_de, g = s_dn),
-             \(a, b, c, d, e, f, g) bind_cols(a, b, c, d, e, f, g))
+                  # f = s_de, g = s_dn, 
+                  h = s_rev_en, ii = s_rev_id, pict = s_pict),
+             \(a, b, c, d, e, h, ii, pict) bind_cols(a, b, c, d, e, h, ii, pict))
 s_df <- map2(.x = s_df, .y = names(s_df), ~mutate(.x, entry_id = .y)) |> 
   list_rbind()
 
@@ -320,6 +348,7 @@ ex_l <- list(a = s_ex_eno_source_df,
 
 s_ex_all_df <- pmap(ex_l, \(a, b, c, d) bind_cols(a, b, c, d)) |> 
   map(~select(., entry_id, sense_id, everything(.))) |> 
+  map(~mutate(., across(where(is.logical), ~as.character(.)))) |> 
   list_rbind()
 
 # ETYMOLOGY ====
@@ -328,17 +357,27 @@ etym <- myentry |>
 names(etym) <- myentry_id_num
 
 etym_df <- etym |> 
-  map(~xml_find_all(., "gloss[@lang=\"en\"]")) |> 
+  map(~xml_find_all(., "form[@lang='eno']/text")) |> 
   map(~xml_text(.)) |> 
   map(\(x) if(identical(x, character(0))) NA else x) |> 
   map(\(x) replace(x, nchar(x) == 0, NA)) |> 
-  map(\(x) tibble(etym = x))
+  map(\(x) tibble(etym_proto = x))
 etym_df <- etym_df |> 
   map2(.y = names(etym_df), ~mutate(.x, entry_id = .y)) |> 
   list_rbind()
 
+etym_borrowed <- etym |> 
+  map(~xml_find_all(., "field/form[@lang='en']/text/span[@lang='eno']")) |> 
+  map(~xml_text(.)) |> 
+  map(\(x) if(identical(x, character(0))) NA else x) |> 
+  map(\(x) replace(x, nchar(x) == 0, NA)) |> 
+  map(\(x) tibble(etym_borrowed = x))
+etym_borrowed <- etym_borrowed |> 
+  map2(.y = names(etym_borrowed), ~mutate(.x, entry_id = .y)) |> 
+  list_rbind()
+
 etym_df1 <- etym |> 
-  map(~xml_find_all(., "gloss[@lang=\"id\"]")) |> 
+  map(~xml_find_all(., "form[@lang=\"id\"]/text")) |> 
   map(~xml_text(.)) |> 
   map(\(x) if(identical(x, character(0))) NA else x) |> 
   map(\(x) replace(x, nchar(x) == 0, NA)) |> 
@@ -357,9 +396,9 @@ etym_type <- etym_type |>
   list_rbind()
 
 lu_form_df <- lu_form_df |> 
+  left_join(etym_type) |> 
   left_join(etym_df) |> 
-  left_join(etym_df1) |> 
-  left_join(etym_type)
+  left_join(etym_borrowed)
 
 # VARIANT: extract <variant> using purrr::map() for each <entry> ======
 # var_form <- myentry %>% 
@@ -388,287 +427,67 @@ lu_form_df <- lu_form_df |>
 #   arrange(form, order)
 
 lu_form_df <- lu_form_df |> 
-  left_join(s_ex_all_df)
+  left_join(s_ex_all_df) |> 
+  distinct()
 
 
 # NOTE: extract the <note> for the lexeme entry ======
 ## re-run later
-# notes <- myentry |> 
-#   map(~xml_find_all(., 'note'))
-# names(notes) <- myentry_id_num
-# notes_children <- notes |> 
-#   map(~xml_children(.)) |> 
-#   map(~xml_name(.)) |> 
-#   unlist() |> 
-#   unique()
-# notes_children
+notes <- myentry |>
+  map(~xml_find_all(., 'note'))
+names(notes) <- myentry_id_num
+notes_children <- notes |>
+  map(~xml_children(.)) |>
+  map(~xml_name(.)) |>
+  unlist() |>
+  unique()
+notes_children
 # # [1] "form"
-# notes_grandchilren <- notes |> 
-#   map(~xml_find_all(., 'form')) |> 
-#   map(~xml_children(.)) |> 
-#   map(~xml_name(.)) |> 
-#   unlist() |> 
-#   unique()
-# notes_grandchilren
+notes_grandchilren <- notes |>
+  map(~xml_find_all(., 'form')) |>
+  map(~xml_children(.)) |>
+  map(~xml_name(.)) |>
+  unlist() |>
+  unique()
+notes_grandchilren
 # # [1] "text"
-# notes_text_lang <- notes |> 
-#   map(~xml_find_all(., 'form')) |> 
-#   map(~xml_attr(., 'lang'))
-# notes_text_lang |> unlist() |> unique()
+notes_text_lang <- notes |>
+  map(~xml_find_all(., 'form')) |>
+  map(~xml_attr(., 'lang'))
+notes_text_lang |> unlist() |> unique()
 # # [1] "en" --- SO I DO NOT NEED TO MAKE A COLUMN FOR LANGUAGE OF THE NOTE
-# notes_text <- notes |> 
-#   map(~xml_find_all(., 'form/text')) |> 
-#   map(~xml_text(.))
-# notes_text_df <- map2(.x = notes_text,
-#                       .y = names(notes_text),
-#                       ~tibble(entry_id = .y,
-#                               notes_lexeme = .x)) |> 
-#   list_rbind() |> 
-#   mutate(notes_lexeme = if_else(str_detect(notes_lexeme, "^\\("),
-#                                 str_replace_all(notes_lexeme, "(^\\(|\\)$)", ""),
-#                                 notes_lexeme))
-# notes_text_df
+notes_text_en <- notes |>
+  map(~xml_find_all(., 'form[@lang="en"]/text')) |>
+  map(~xml_text(.))
+notes_text_id <-  notes |>
+  map(~xml_find_all(., 'form[@lang="id"]/text')) |>
+  map(~xml_text(.))
+notes_text_df <- pmap(list(notes_text_en, notes_text_id, names(notes_text_en)), \(a, b, c) tibble(entry_id = c, notes_eng = a, notes_idn = b)) |> 
+  list_rbind() # |> 
+  # mutate(notes_lexeme = if_else(str_detect(notes_lexeme, "^\\("),
+  #                               str_replace_all(notes_lexeme, "(^\\(|\\)$)", ""),
+  #                               notes_lexeme))
+notes_text_df
 
+lu_form_df <- lu_form_df |> 
+  left_join(notes_text_df)
+
+# CITATION forms ====
+cit <- myentry |>
+  map(~xml_find_all(., 'citation'))
+names(cit) <- myentry_id_num
+cit_form <- cit |>
+  map(~xml_find_all(., 'form[@lang="eno"]/text')) |>
+  map(~xml_text(.))
+cit_form_df <- pmap(list(cit_form, names(cit_form)), \(a, b) tibble(entry_id = b, cit_form = a)) |> 
+  list_rbind()
+
+lu_form_df <- lu_form_df |> 
+  left_join(cit_form_df) |> 
+  distinct()
 
 # write_rds(lu_form_df, "output/contemporary/lift/FLEX-lift-pre-fieldwork.rds")
 # write_rds(lu_form_df, "output/contemporary/lift/FLEX-lift-march-2024.rds")
 # write_rds(lu_form_df, "output/contemporary/lift/FLEX-lift-2024-12-28.rds")
-
-
-
-
-# Install and load required libraries
-# install.packages("xml2")
-# install.packages("dplyr")
-# install.packages("purrr")
-
-# Load libraries
-# library(xml2)
-# library(dplyr)
-# library(purrr)
-
-# Your XML data
-# xml_data <- '
-# <entry dateCreated="2024-12-02T06:10:58Z" dateModified="2024-12-02T10:30:18Z" guid="2e70337d-347d-4c0b-a720-edfb4ac63f66" id="ka\'ai\' paya_2e70337d-347d-4c0b-a720-edfb4ac63f66">
-#     <lexical-unit>
-#         <form lang="eno">
-#             <text>ka\'ai\' paya</text>
-#         </form>
-#     </lexical-unit>
-#     <trait name="morph-type" value="phrase"/>
-#     <relation order="0" ref="ka\'ai\'_3ba72828-f0d4-4678-80d5-d9129f340c60" type="_component-lexeme">
-#         <trait name="is-primary" value="true"/>
-#         <trait name="complex-form-type" value="Complex Form"/>
-#     </relation>
-#     <sense id="960e9218-e678-4e50-b018-7b91d681fb43">
-#         <grammatical-info value="Noun"/>
-#         <gloss lang="en">
-#             <text>spear with Paya-fish-shaped blade</text>
-#         </gloss>
-#         <gloss lang="id">
-#             <text>tombak bergigi seperti ikan Paya</text>
-#         </gloss>
-#         <example source="Attire_02_JK">
-#             <form lang="eno">
-#                 <text>Ka\' ka\'ai\' paya</text>
-#             </form>
-#             <translation type="Free translation">
-#                 <form lang="en">
-#                     <text>The blade of the spear is like the Paya fish</text>
-#                 </form>
-#                 <form lang="id">
-#                     <text>Gigi tombaknya seperti ikan Paya</text>
-#                 </form>
-#             </translation>
-#             <note type="reference">
-#                 <form lang="en">
-#                     <text>Attire_02_JK</text>
-#                 </form>
-#             </note>
-#         </example>
-#         <reversal type="en">
-#             <form lang="en">
-#                 <text>spear with Paya-fish-shaped blade</text>
-#             </form>
-#         </reversal>
-#         <reversal type="id">
-#             <form lang="id">
-#                 <text>tombak bergigi seperti ikan Paya</text>
-#             </form>
-#         </reversal>
-#         <illustration href="156.jpg"/>
-#     </sense>
-# </entry>'
-# 
-# # Parse the XML
-# xml_parsed <- read_xml(xml_data)
-# 
-# # Extract data and create a tibble
-# data <- tibble(
-#   dateCreated = xml_find_first(xml_parsed, ".//entry/@dateCreated") %>% xml_text(),
-#   dateModified = xml_find_first(xml_parsed, ".//entry/@dateModified") %>% xml_text(),
-#   guid = xml_find_first(xml_parsed, ".//entry/@guid") %>% xml_text(),
-#   id = xml_find_first(xml_parsed, ".//entry/@id") %>% xml_text(),
-#   lexical_unit = xml_find_first(xml_parsed, ".//lexical-unit/form/text") %>% xml_text(),
-#   morph_type = xml_find_first(xml_parsed, ".//trait[@name='morph-type']/@value") %>% xml_text(),
-#   relation_order = xml_find_first(xml_parsed, ".//relation/@order") %>% xml_text(),
-#   relation_ref = xml_find_first(xml_parsed, ".//relation/@ref") %>% xml_text(),
-#   relation_type = xml_find_first(xml_parsed, ".//relation/@type") %>% xml_text(),
-#   relation_is_primary = xml_find_first(xml_parsed, ".//relation/trait[@name='is-primary']/@value") %>% xml_text(),
-#   relation_complex_form_type = xml_find_first(xml_parsed, ".//relation/trait[@name='complex-form-type']/@value") %>% xml_text(),
-#   sense_id = xml_find_first(xml_parsed, ".//sense/@id") %>% xml_text(),
-#   grammatical_info = xml_find_first(xml_parsed, ".//sense/grammatical-info/@value") %>% xml_text(),
-#   gloss_en = xml_find_first(xml_parsed, ".//sense/gloss[@lang='en']/text") %>% xml_text(),
-#   gloss_id = xml_find_first(xml_parsed, ".//sense/gloss[@lang='id']/text") %>% xml_text(),
-#   example_source = xml_find_first(xml_parsed, ".//sense/example/@source") %>% xml_text(),
-#   example_text = xml_find_first(xml_parsed, ".//sense/example/form[@lang='eno']/text") %>% xml_text(),
-#   translation_en = xml_find_first(xml_parsed, ".//sense/example/translation/form[@lang='en']/text") %>% xml_text(),
-#   translation_id = xml_find_first(xml_parsed, ".//sense/example/translation/form[@lang='id']/text") %>% xml_text(),
-#   note_reference = xml_find_first(xml_parsed, ".//sense/example/note[@type='reference']/form[@lang='en']/text") %>% xml_text(),
-#   reversal_en = xml_find_first(xml_parsed, ".//sense/reversal[@type='en']/form[@lang='en']/text") %>% xml_text(),
-#   reversal_id = xml_find_first(xml_parsed, ".//sense/reversal[@type='id']/form[@lang='id']/text") %>% xml_text(),
-#   illustration_href = xml_find_first(xml_parsed, ".//sense/illustration/@href") %>% xml_text()
-# )
-# 
-# # Display the resulting tibble
-# print(data)
-# data |> as.data.frame()
-# 
-# 
-# # Install and load required libraries
-# # install.packages("xml2")
-# # install.packages("dplyr")
-# # install.packages("purrr")
-# 
-# # Load libraries
-# library(xml2)
-# library(dplyr)
-# library(purrr)
-# 
-# # Your XML data
-# xml_data <- '
-# <entry dateCreated="2024-12-02T06:10:59Z" dateModified="2024-12-02T06:10:59Z" guid="602982d7-ce7a-4a03-9f46-f5f5995fea7a" id="pi_602982d7-ce7a-4a03-9f46-f5f5995fea7a">
-#     <lexical-unit>
-#         <form lang="eno">
-#             <text>pi</text>
-#         </form>
-#     </lexical-unit>
-#     <trait name="morph-type" value="stem"/>
-#     <etymology source="" type="proto">
-#         <form lang="eno">
-#             <text>pia</text>
-#         </form>
-#     </etymology>
-#     <sense id="973ba5b9-77ec-4696-afba-4df31d575c01">
-#         <grammatical-info value="Noun"/>
-#         <gloss lang="en">
-#             <text>garden</text>
-#         </gloss>
-#         <gloss lang="id">
-#             <text>kebun</text>
-#         </gloss>
-#         <example source="SMP_5">
-#             <form lang="eno">
-#                 <text>Hobaku̇\' i pi, u he a\'a\' paruha wak a kahai babip it be no\'man dop kaprap.</text>
-#             </form>
-#             <translation type="Free translation">
-#                 <form lang="en">
-#                     <text>After having arrived at the garden, my older sibling and I help my uncle with cutting down the banana.</text>
-#                 </form>
-#                 <form lang="id">
-#                     <text>Setibanya di kebun, saya dan kakak saya membantu paman kami menebang pisangnya.</text>
-#                 </form>
-#             </translation>
-#             <note type="reference">
-#                 <form lang="en">
-#                     <text>SMP_5</text>
-#                 </form>
-#             </note>
-#         </example>
-#         <example source="SMP_7">
-#             <form lang="eno">
-#                 <text>Kiki mė\' kah bakuha kak tuor i pi.</text>
-#             </form>
-#             <translation type="Free translation">
-#                 <form lang="en">
-#                     <text>There are others who helped their parents in the garden.</text>
-#                 </form>
-#                 <form lang="id">
-#                     <text>Ada yang membantu orang tua mereka di kebun.</text>
-#                 </form>
-#             </translation>
-#             <note type="reference">
-#                 <form lang="en">
-#                     <text>SMP_7</text>
-#                 </form>
-#             </note>
-#         </example>
-#         <example source="SMP_8">
-#             <form lang="eno">
-#                 <text>“Di\'iu Ibu Nita, kuru Muatan Lokal a i tekora, Pak Milson ẽ\' pihia\' bukuha a tentang yarė\' kõ\'ĩã nahai ya\'u yu̇r kõ\'ĩã i pi a mė\' kiki i tekora, Pak.”</text>
-#             </form>
-#             <translation type="Free translation">
-#                 <form lang="en">
-#                     <text>“it is said by Ms. Nita, teacher of Local Knowledge when at school, Mr. Milson can help us with planting melinjo so that its life is good at our garden at school, sir.”</text>
-#                 </form>
-#                 <form lang="id">
-#                     <text>“Dikatakan oleh Ibu Nita, guru Muatan Lokal ketika di sekolah, Pak Milson ini bisa membantu kami tentang penanaman melinjo supaya bagus hidupnya melinjo di kebun kami yang ada di sekolah, Pak.”</text>
-#                 </form>
-#             </translation>
-#             <note type="reference">
-#                 <form lang="en">
-#                     <text>SMP_8</text>
-#                 </form>
-#             </note>
-#         </example>
-#         <reversal type="en">
-#             <form lang="en">
-#                 <text>garden</text>
-#             </form>
-#         </reversal>
-#         <reversal type="id">
-#             <form lang="id">
-#                 <text>kebun</text>
-#             </form>
-#         </reversal>
-#         <illustration href="309.JPG"/>
-#     </sense>
-# </entry>'
-# 
-# # Parse the XML
-# xml_parsed <- read_xml(xml_data)
-# 
-# # Extract data and create a tibble
-# data <- tibble(
-#   dateCreated = xml_find_first(xml_parsed, ".//entry/@dateCreated") %>% xml_text(),
-#   dateModified = xml_find_first(xml_parsed, ".//entry/@dateModified") %>% xml_text(),
-#   guid = xml_find_first(xml_parsed, ".//entry/@guid") %>% xml_text(),
-#   id = xml_find_first(xml_parsed, ".//entry/@id") %>% xml_text(),
-#   lexical_unit = xml_find_first(xml_parsed, ".//lexical-unit/form/text") %>% xml_text(),
-#   morph_type = xml_find_first(xml_parsed, ".//trait[@name='morph-type']/@value") %>% xml_text(),
-#   etymology = xml_find_first(xml_parsed, ".//etymology/form/text") %>% xml_text(),
-#   grammatical_info = xml_find_first(xml_parsed, ".//sense/grammatical-info/@value") %>% xml_text(),
-#   gloss_en = xml_find_first(xml_parsed, ".//sense/gloss[@lang='en']/text") %>% xml_text(),
-#   gloss_id = xml_find_first(xml_parsed, ".//sense/gloss[@lang='id']/text") %>% xml_text(),
-#   example_source_1 = xml_find_first(xml_parsed, ".//sense/example[@source='SMP_5']/@source") %>% xml_text(),
-#   example_text_1 = xml_find_first(xml_parsed, ".//sense/example[@source='SMP_5']/form/text") %>% xml_text(),
-#   translation_en_1 = xml_find_first(xml_parsed, ".//sense/example[@source='SMP_5']/translation/form[@lang='en']/text") %>% xml_text(),
-#   translation_id_1 = xml_find_first(xml_parsed, ".//sense/example[@source='SMP_5']/translation/form[@lang='id']/text") %>% xml_text(),
-#   note_reference_1 = xml_find_first(xml_parsed, ".//sense/example[@source='SMP_5']/note/form/text") %>% xml_text(),
-#   example_source_2 = xml_find_first(xml_parsed, ".//sense/example[@source='SMP_7']/@source") %>% xml_text(),
-#   example_text_2 = xml_find_first(xml_parsed, ".//sense/example[@source='SMP_7']/form/text") %>% xml_text(),
-#   translation_en_2 = xml_find_first(xml_parsed, ".//sense/example[@source='SMP_7']/translation/form[@lang='en']/text") %>% xml_text(),
-#   translation_id_2 = xml_find_first(xml_parsed, ".//sense/example[@source='SMP_7']/translation/form[@lang='id']/text") %>% xml_text(),
-#   note_reference_2 = xml_find_first(xml_parsed, ".//sense/example[@source='SMP_7']/note/form/text") %>% xml_text(),
-#   example_source_3 = xml_find_first(xml_parsed, ".//sense/example[@source='SMP_8']/@source") %>% xml_text(),
-#   example_text_3 = xml_find_first(xml_parsed, ".//sense/example[@source='SMP_8']/form/text") %>% xml_text(),
-#   translation_en_3 = xml_find_first(xml_parsed, ".//sense/example[@source='SMP_8']/translation/form[@lang='en']/text") %>% xml_text(),
-#   translation_id_3 = xml_find_first(xml_parsed, ".//sense/example[@source='SMP_8']/translation/form[@lang='id']/text") %>% xml_text(),
-#   note_reference_3 = xml_find_first(xml_parsed, ".//sense/example[@source='SMP_8']/note/form/text") %>% xml_text(),
-#   reversal_en = xml_find_first(xml_parsed, ".//sense/reversal[@type='en']/form/text") %>% xml_text(),
-#   reversal_id = xml_find_first(xml_parsed, ".//sense/reversal[@type='id']/form/text") %>% xml_text(),
-#   illustration_href = xml_find_first(xml_parsed, ".//sense/illustration/@href") %>% xml_text()
-# )
-# 
-# # Display the resulting tibble
-# print(data)
+write_rds(lu_form_df, "input/textbook/Enggano-Learner-Dictionary/Enggano-Learner-Dictionary.rds")
+write_tsv(lu_form_df, "input/textbook/Enggano-Learner-Dictionary/Enggano-Learner-Dictionary.tsv")
