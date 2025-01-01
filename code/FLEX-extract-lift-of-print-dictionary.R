@@ -486,5 +486,16 @@ lu_form_df <- lu_form_df |>
   left_join(cit_form_df) |> 
   distinct()
 
+dateCreated_df <- tibble(dateCreated, entry_id = lu_form_entry_guid)
+dateModified_df <- tibble(dateModified, entry_id = lu_form_entry_guid)
+
+lu_form_df <- lu_form_df |> 
+  mutate(across(where(is.character), ~replace_na(., ""))) |> 
+  left_join(dateCreated_df) |> 
+  left_join(dateModified_df) |> 
+  select(-entry_id) |> 
+  select(dateCreated, dateModified, entry_id = entry_id_orig, everything())
+
 write_rds(lu_form_df, "data-output/Enggano-Learner-Dictionary.rds")
 write_tsv(lu_form_df, "data-output/Enggano-Learner-Dictionary.tsv")
+write_csv(lu_form_df, "data-output/Enggano-Learner-Dictionary.csv")
