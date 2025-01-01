@@ -24105,6 +24105,14 @@
 				<form lang="eno">
 					<text>Kah yõkõ' kėrape ka'daih</text>
 				</form>
+				<translation type="Free translation">
+					<form lang="en">
+						<text>???</text>
+					</form>
+					<form lang="id">
+						<text>???</text>
+					</form>
+				</translation>
 				<note type="reference">
 					<form lang="en">
 						<text>Culture_02_IT</text>
@@ -30750,15 +30758,23 @@
 		<sense id="27e153ba-8600-4b80-8298-f3958a11cc8d">
 			<grammatical-info value="Noun"/>
 			<gloss lang="en">
-				<text>pesisir pantai</text>
+				<text>shore</text>
 			</gloss>
 			<gloss lang="id">
-				<text>shore</text>
+				<text>pesisir pantai</text>
 			</gloss>
 			<example source="Culture_02_IT">
 				<form lang="eno">
 					<text>Heri iok do'oa'</text>
 				</form>
+				<translation type="Free translation">
+					<form lang="en">
+						<text>The sandy shore</text>
+					</form>
+					<form lang="id">
+						<text>Pesisir pantai</text>
+					</form>
+				</translation>
 				<note type="reference">
 					<form lang="en">
 						<text>Culture_02_IT</text>
@@ -30785,12 +30801,12 @@
 			</example>
 			<reversal type="en">
 				<form lang="en">
-					<text>pesisir pantai</text>
+					<text>shore</text>
 				</form>
 			</reversal>
 			<reversal type="id">
 				<form lang="id">
-					<text>shore</text>
+					<text>pesisir pantai</text>
 				</form>
 			</reversal>
 		</sense>
@@ -51040,6 +51056,14 @@
 				<form lang="eno">
 					<text>Kah kabaru̇' yu̇̃' ean</text>
 				</form>
+				<translation type="Free translation">
+					<form lang="en">
+						<text>???</text>
+					</form>
+					<form lang="id">
+						<text>???</text>
+					</form>
+				</translation>
 				<note type="reference">
 					<form lang="en">
 						<text>Culture_02_IT</text>
@@ -58922,6 +58946,14 @@
 				<form lang="eno">
 					<text>Edupi kinakan ean</text>
 				</form>
+				<translation type="Free translation">
+					<form lang="en">
+						<text> </text>
+					</form>
+					<form lang="id">
+						<text> </text>
+					</form>
+				</translation>
 				<note type="reference">
 					<form lang="en">
 						<text>Culture_02_IT</text>
@@ -76392,6 +76424,14 @@
 				<form lang="eno">
 					<text>Kah yõkõ' kėrape ka'daih</text>
 				</form>
+				<translation type="Free translation">
+					<form lang="en">
+						<text>White headband</text>
+					</form>
+					<form lang="id">
+						<text>Ikat kepala putih</text>
+					</form>
+				</translation>
 				<note type="reference">
 					<form lang="en">
 						<text>Culture_02_IT</text>
@@ -79050,6 +79090,14 @@
 				<form lang="eno">
 					<text>Yãh yah bėhu̇dah ayam</text>
 				</form>
+				<translation type="Free translation">
+					<form lang="en">
+						<text>The place to sell chicken</text>
+					</form>
+					<form lang="id">
+						<text>Tempat menjual ayam</text>
+					</form>
+				</translation>
 				<note type="reference">
 					<form lang="en">
 						<text>Attire_04_IT</text>
