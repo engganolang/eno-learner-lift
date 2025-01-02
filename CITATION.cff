@@ -1,0 +1,73 @@
+# This CITATION.cff file was generated with cffinit.
+# Visit https://bit.ly/cffinit to generate yours today!
+
+cff-version: 1.2.0
+title: >-
+  R codes and Datasets derived from “Kamus Bahasa Enggano”,
+  the printed learner's dictionary of Contemporary Enggano
+message: >-
+  If you use this dataset, please cite this dataset together
+  with the print dictionary.
+type: software
+authors:
+  - given-names: Gede Primahadi Wijaya
+    family-names: Rajeg
+    email: primahadi_wijaya@unud.ac.id
+    affiliation: University of Oxford & Udayana University
+    orcid: 'https://orcid.org/0000-0002-2047-8621'
+  - given-names: Charlotte
+    family-names: Hemmings
+    email: charlotte.hemmings@ling-phil.ox.ac.uk
+    affiliation: University of Oxford
+    orcid: 'https://orcid.org/0000-0002-3076-5544'
+  - given-names: Engga Zakaria
+    family-names: Sangian
+    affiliation: Dehasen University
+    orcid: 'https://orcid.org/0009-0000-8802-6819'
+    email: ezs21072@gmail.com
+  - given-names: Dendi
+    family-names: Wijaya
+    email: dendi0587@gmail.com
+    orcid: 'https://orcid.org/0000-0002-8767-9364'
+    affiliation: National Research and Innovation Agency
+  - given-names: I Wayan
+    family-names: Arka
+    orcid: 'https://orcid.org/0000-0002-2819-6186'
+    affiliation: Australian National University & Udayana University
+    email: wayanarka45@gmail.com
+repository-code: 'https://github.com/engganolang/eno-learner-lift'
+abstract: >-
+  A repository of .lift export from the FLEx project for the
+  Enggano Learner (Printed) Dictionary. This .lift (XML)
+  file is then transformed into tidy data of tibble/data
+  frame/rectangular table. This repository differs from the
+  repository that generates the .sfm file to be imported
+  into an FLEx project to generate the Enggano Learner
+  (Printed) Dictionary.
+keywords:
+  - tidy data
+  - tidyverse
+  - Enggano
+  - Enggano language
+  - Enggano dictionary
+  - Contemporary Enggano Dictionary
+  - XML
+  - Kamus Bahasa Enggano
+  - Lexical Database
+  - Dataframe
+  - Enggano Lexicography
+  - Digital Lexicography
+  - Computational Lexicography
+  - Arts and Humanities Research Council
+  - Language Documentation
+  - Endangered Language Lexicography
+  - Perkamusan bahasa daerah
+  - Barrier Islands Language of Indonesia
+  - Lexicography
+  - R programming
+  - Digital Humanities
+  - Lexical Resources
+  - Lexical Data
+license: CC-BY-NC-SA-4.0
+version: 1.0.0
+date-released: '2025-01-01'
