@@ -45,3 +45,18 @@ International<img style="height:22px!important;margin-left:3px;vertical-align:te
 <!-- badges: end -->
 
 ## Overview
+
+If you use the dataset and R codes in this repository, please cite the
+source printed dictionary as well as this repository using the latest
+[released
+version](https://github.com/engganolang/eno-learner-lift/releases)
+available:
+
+> Rajeg, G. P. W., Hemmings, C., Sangian, E. Z., Wijaya, D., & Arka, I.
+> W. (2024). *Kamus Pemelajar Bahasa Enggano*. Bengkulu: Zara Abadi.
+
+> Rajeg, G. P. W., Hemmings, C., Sangian, E. Z., Wijaya, D., & Arka, I.
+> W. (2025). R codes and datasets derived from “Kamus Pemelajar Bahasa
+> Enggano”, the printed learner’s dictionary of Contemporary Enggano
+> (Version 1.0.0) \[Computer software\].
+> <https://github.com/engganolang/eno-learner-lift>
