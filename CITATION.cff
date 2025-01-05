@@ -3,7 +3,7 @@
 
 cff-version: 1.2.0
 title: >-
-  R codes and Datasets derived from “Kamus Pemelajar Bahasa Enggano”,
+  R codes and datasets derived from “Kamus Pemelajar Bahasa Enggano”,
   the printed learner's dictionary of Contemporary Enggano
 message: >-
   If you use this dataset, please cite this dataset together
@@ -13,7 +13,7 @@ authors:
   - given-names: Gede Primahadi Wijaya
     family-names: Rajeg
     email: primahadi_wijaya@unud.ac.id
-    affiliation: University of Oxford & Udayana University
+    affiliation: University of Oxford; Udayana University
     orcid: 'https://orcid.org/0000-0002-2047-8621'
   - given-names: Charlotte
     family-names: Hemmings
@@ -33,7 +33,7 @@ authors:
   - given-names: I Wayan
     family-names: Arka
     orcid: 'https://orcid.org/0000-0002-2819-6186'
-    affiliation: Australian National University & Udayana University
+    affiliation: Australian National University; Udayana University
     email: wayanarka45@gmail.com
 repository-code: 'https://github.com/engganolang/eno-learner-lift'
 abstract: >-
