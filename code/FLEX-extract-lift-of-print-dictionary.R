@@ -3,6 +3,8 @@
 ### Kah yõkõ' kėrape ka'daih (2f6dc8ff-b718-4687-ac85-344a19959037)
 ### Yãh yah bėhu̇dah ayam (a4c92df3-3d45-4e2b-acb5-7c0fd99e9d48)
 ### UPDATE: This has been git tracked now (1 Jan. 2025)
+#### commit: https://github.com/engganolang/eno-learner-lift/commit/16bbfa89b3fad95c0cc121b55366f28f1abaed54
+#### commit: https://github.com/engganolang/eno-learner-lift/commit/79a9bb33f929ee4f45ce6e6e160a23ce929550bb
 
 
 library(tidyverse)
