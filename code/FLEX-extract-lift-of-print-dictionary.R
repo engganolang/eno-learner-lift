@@ -1,7 +1,8 @@
+# by Gede Primahadi W. Rajeg (2025) - University of Oxford; Udayana University
 ## Note: these texts have no translation elements, so I manually added it for escaping error:
 ### Kah yõkõ' kėrape ka'daih (2f6dc8ff-b718-4687-ac85-344a19959037)
 ### Yãh yah bėhu̇dah ayam (a4c92df3-3d45-4e2b-acb5-7c0fd99e9d48)
-### This has been git tracked now (1 Jan. 2025)
+### UPDATE: This has been git tracked now (1 Jan. 2025)
 
 
 library(tidyverse)

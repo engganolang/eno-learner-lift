@@ -3,7 +3,7 @@
 
 cff-version: 1.2.0
 title: >-
-  R codes and datasets derived from “Kamus Pemelajar Bahasa Enggano”,
+  R codes for datasets derived from “Kamus Pemelajar Bahasa Enggano”,
   the printed learner's dictionary of Contemporary Enggano
 message: >-
   If you use this dataset, please cite this dataset together
@@ -37,13 +37,7 @@ authors:
     email: wayanarka45@gmail.com
 repository-code: 'https://github.com/engganolang/eno-learner-lift'
 abstract: >-
-  A repository of .lift export from the FLEx project for the
-  Enggano Learner (Printed) Dictionary. This .lift (XML)
-  file is then transformed into tidy data of tibble/data
-  frame/rectangular table. This repository differs from the
-  repository that generates the .sfm file to be imported
-  into an FLEx project to generate the Enggano Learner
-  (Printed) Dictionary.
+  A repository of R codes to transform the .lift export (XML) from the FLEx project for the Enggano Learner (Printed) Dictionary into tidy data of tibble/data frame/rectangular table. This repository differs from the repository (https://doi.org/10.17605/OSF.IO/4BHMU) that generates the .sfm file to be imported into an FLEx project to generate the Enggano Learner (Printed) Dictionary.
 keywords:
   - tidy data
   - tidyverse

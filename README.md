@@ -1,4 +1,4 @@
-R codes and datasets derived from “Kamus Pemelajar Bahasa Enggano”, the
+R codes for datasets derived from “Kamus Pemelajar Bahasa Enggano”, the
 printed learner’s dictionary of Contemporary Enggano
 ================
 Gede Primahadi Wijaya Rajeg
@@ -56,7 +56,7 @@ available:
 > W. (2024). *Kamus Pemelajar Bahasa Enggano*. Bengkulu: Zara Abadi.
 
 > Rajeg, G. P. W., Hemmings, C., Sangian, E. Z., Wijaya, D., & Arka, I.
-> W. (2025). R codes and datasets derived from “Kamus Pemelajar Bahasa
+> W. (2025). R codes for datasets derived from “Kamus Pemelajar Bahasa
 > Enggano”, the printed learner’s dictionary of Contemporary Enggano
 > (Version 1.0.0) \[Computer software\].
 > <https://github.com/engganolang/eno-learner-lift>
