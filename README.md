@@ -59,7 +59,7 @@ available:
 > Rajeg, G. P. W., Hemmings, C., Sangian, E. Z., Wijaya, D., & Arka, I.
 > W. (2025). R codes for datasets derived from “Kamus Bahasa Enggano”,
 > the printed learner’s dictionary of Contemporary Enggano (Version
-> 1.0.0) \[Computer software\].
+> 1.0.1) \[Computer software\].
 > <https://github.com/engganolang/eno-learner-lift>
 
 ### ISBN number
