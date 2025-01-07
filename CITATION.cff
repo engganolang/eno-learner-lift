@@ -36,8 +36,17 @@ authors:
     affiliation: Australian National University; Udayana University
     email: wayanarka45@gmail.com
 repository-code: 'https://github.com/engganolang/eno-learner-lift'
+repository: >-
+  https://www.zaraabadipublisher.com/2024/12/kamus-bahasa-enggano_64.html
 abstract: >-
-  A repository of R codes to transform the .lift export (XML) from the FLEx project for the Enggano Learner (Printed) Dictionary into tidy data of tibble/data frame/rectangular table. This repository differs from the repository (https://doi.org/10.17605/OSF.IO/4BHMU) that generates the .sfm file to be imported into an FLEx project to generate the Enggano Learner (Printed) Dictionary.
+  A repository of R codes to transform the .lift export
+  (XML) from the FLEx project for the Enggano Learner
+  (Printed) Dictionary into tidy data of tibble/data
+  frame/rectangular table. This repository differs from the
+  repository (https://doi.org/10.17605/OSF.IO/4BHMU) that
+  generates the .sfm file to be imported into an FLEx
+  project to generate the Enggano learner's print
+  dictionary.
 keywords:
   - tidy data
   - tidyverse
@@ -63,5 +72,5 @@ keywords:
   - Lexical Resources
   - Lexical Data
 license: CC-BY-NC-SA-4.0
-version: 1.0.0
-date-released: '2025-01-01'
+version: 1.0.1
+date-released: '2025-01-07'
