@@ -1,5 +1,5 @@
-R codes for datasets derived from “Kamus Pemelajar Bahasa Enggano”, the
-printed learner’s dictionary of Contemporary Enggano
+R codes for datasets derived from “Kamus Bahasa Enggano”, the printed
+learner’s dictionary of Contemporary Enggano
 ================
 Gede Primahadi Wijaya Rajeg
 <a itemprop="sameAs" content="https://orcid.org/0000-0002-2047-8621" href="https://orcid.org/0000-0002-2047-8621" target="orcid.widget" rel="noopener noreferrer" style="vertical-align:top;"><img src="https://orcid.org/sites/default/files/images/orcid_16x16.png" style="width:1em;margin-right:.5em;" alt="ORCID iD icon"></a>,
@@ -53,10 +53,15 @@ version](https://github.com/engganolang/eno-learner-lift/releases)
 available:
 
 > Rajeg, G. P. W., Hemmings, C., Sangian, E. Z., Wijaya, D., & Arka, I.
-> W. (2024). *Kamus Pemelajar Bahasa Enggano*. Bengkulu: Zara Abadi.
+> W. (2025). *Kamus Bahasa Enggano*. [Bengkulu: Zara
+> Abadi](https://www.zaraabadipublisher.com/2024/12/kamus-bahasa-enggano_64.html).
 
 > Rajeg, G. P. W., Hemmings, C., Sangian, E. Z., Wijaya, D., & Arka, I.
-> W. (2025). R codes for datasets derived from “Kamus Pemelajar Bahasa
-> Enggano”, the printed learner’s dictionary of Contemporary Enggano
-> (Version 1.0.0) \[Computer software\].
+> W. (2025). R codes for datasets derived from “Kamus Bahasa Enggano”,
+> the printed learner’s dictionary of Contemporary Enggano (Version
+> 1.0.0) \[Computer software\].
 > <https://github.com/engganolang/eno-learner-lift>
+
+### ISBN number
+
+<img src="img/kamus-bahasa-Enggano-ISBN-screenshot.png" width="1088" />

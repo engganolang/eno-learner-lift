@@ -1,6 +1,6 @@
 ---
 output: github_document
-title: "R codes for datasets derived from “Kamus Pemelajar Bahasa Enggano”, the printed learner's dictionary of Contemporary Enggano"
+title: "R codes for datasets derived from “Kamus Bahasa Enggano”, the printed learner's dictionary of Contemporary Enggano"
 author: 'Gede Primahadi Wijaya Rajeg <a itemprop="sameAs" content="https://orcid.org/0000-0002-2047-8621" href="https://orcid.org/0000-0002-2047-8621" target="orcid.widget" rel="noopener noreferrer" style="vertical-align:top;"><img src="https://orcid.org/sites/default/files/images/orcid_16x16.png" style="width:1em;margin-right:.5em;" alt="ORCID iD icon"></a>, Charlotte Hemmings <a itemprop="sameAs" content="https://orcid.org/0000-0002-3076-5544" href="https://orcid.org/0000-0002-3076-5544" target="orcid.widget" rel="noopener noreferrer" style="vertical-align:top;"><img src="https://orcid.org/sites/default/files/images/orcid_16x16.png" style="width:1em;margin-right:.5em;" alt="ORCID iD icon"></a>, Engga Zakaria Sangian <a itemprop="sameAs" content="https://orcid.org/0009-0000-8802-6819" href="https://orcid.org/0009-0000-8802-6819" target="orcid.widget" rel="noopener noreferrer" style="vertical-align:top;"><img src="https://orcid.org/sites/default/files/images/orcid_16x16.png" style="width:1em;margin-right:.5em;" alt="ORCID iD icon"></a>, Dendi Wijaya <a itemprop="sameAs" content="https://orcid.org/0000-0002-8767-9364" href="https://orcid.org/0000-0002-8767-9364" target="orcid.widget" rel="noopener noreferrer" style="vertical-align:top;"><img src="https://orcid.org/sites/default/files/images/orcid_16x16.png" style="width:1em;margin-right:.5em;" alt="ORCID iD icon"></a>, I Wayan Arka <a itemprop="sameAs" content="https://orcid.org/0000-0002-2819-6186" href="https://orcid.org/0000-0002-2819-6186" target="orcid.widget" rel="noopener noreferrer" style="vertical-align:top;"><img src="https://orcid.org/sites/default/files/images/orcid_16x16.png" style="width:1em;margin-right:.5em;" alt="ORCID iD icon"></a>'
 ---
 
@@ -29,6 +29,13 @@ knitr::opts_chunk$set(
 
 If you use the dataset and R codes in this repository, please cite the source printed dictionary as well as this repository using the latest [released version](https://github.com/engganolang/eno-learner-lift/releases) available:
 
-> Rajeg, G. P. W., Hemmings, C., Sangian, E. Z., Wijaya, D., & Arka, I. W. (2024). *Kamus Pemelajar Bahasa Enggano*. Bengkulu: Zara Abadi.
+> Rajeg, G. P. W., Hemmings, C., Sangian, E. Z., Wijaya, D., & Arka, I. W. (2025). *Kamus Bahasa Enggano*. [Bengkulu: Zara Abadi](https://www.zaraabadipublisher.com/2024/12/kamus-bahasa-enggano_64.html).
 
-> Rajeg, G. P. W., Hemmings, C., Sangian, E. Z., Wijaya, D., & Arka, I. W. (2025). R codes for datasets derived from “Kamus Pemelajar Bahasa Enggano”, the printed learner's dictionary of Contemporary Enggano (Version 1.0.0) [Computer software]. https://github.com/engganolang/eno-learner-lift
+> Rajeg, G. P. W., Hemmings, C., Sangian, E. Z., Wijaya, D., & Arka, I. W. (2025). R codes for datasets derived from “Kamus Bahasa Enggano”, the printed learner's dictionary of Contemporary Enggano (Version 1.0.0) [Computer software]. https://github.com/engganolang/eno-learner-lift
+
+### ISBN number
+
+```{r isbn-image, fig.dpi=300, fig.asp=0.618, fig.width=6, echo = FALSE}
+knitr::include_graphics("img/kamus-bahasa-Enggano-ISBN-screenshot.png")
+```
+

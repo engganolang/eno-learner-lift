@@ -3,7 +3,7 @@
 
 cff-version: 1.2.0
 title: >-
-  R codes for datasets derived from “Kamus Pemelajar Bahasa Enggano”,
+  R codes for datasets derived from “Kamus Bahasa Enggano”,
   the printed learner's dictionary of Contemporary Enggano
 message: >-
   If you use this dataset, please cite this dataset together
